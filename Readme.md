@@ -16,7 +16,7 @@ Super fast hand rank evaluator for Texas hold'em poker written in Rust
 
 ```toml
 [dependencies]
-holdem-hand-evaluator = { git = "https://github.com/b-inary/holdem-hand-evaluator" }
+holdem-hand-evaluator = { git = "https://github.com/jwilmsmann-i3soft/holdem-hand-evaluator" }
 ```
 
 `example.rs`
