@@ -20,6 +20,27 @@ fn main() {
     println!("size of offset table: {}", offset_table_len);
 
     let mut keys = Vec::new();
+
+
+    // 1-4 card hands
+    for i in 0..NUMBER_OF_RANKS {
+        let x = RANK_BASES[i];
+        keys.push(x);
+        for j in i..NUMBER_OF_RANKS {
+            let x = x + RANK_BASES[j];
+            keys.push(x);
+            for k in j..NUMBER_OF_RANKS {
+                let x = x + RANK_BASES[k];
+                keys.push(x);
+                for m in k..NUMBER_OF_RANKS {
+                    let x = x + RANK_BASES[m];
+                    keys.push(x);
+                }
+            }
+        }
+    }
+
+    // 5-7 card hands
     for i in 0..(NUMBER_OF_RANKS - 1) {
         for j in i..NUMBER_OF_RANKS {
             for k in j..NUMBER_OF_RANKS {

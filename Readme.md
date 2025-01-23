@@ -1,3 +1,6 @@
+# Changes in this fork
+Added support for 1-4 card hands on top of 5-7 card hands. Had to change the constant rank bases for this. Then regenerated offset table and lookup tables.
+
 # holdem-hand-evaluator
 
 Super fast hand rank evaluator for Texas hold'em poker written in Rust

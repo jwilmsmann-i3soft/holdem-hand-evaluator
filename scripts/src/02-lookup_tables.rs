@@ -60,6 +60,72 @@ fn main() {
     let mut lookup = HashMap::new();
     let mut lookup_flush = HashMap::new();
 
+    // 1-cards
+    for i in 0..NUMBER_OF_CARDS {
+        let (key, mask) = add_card(0x3333 << SUIT_SHIFT, 0, i);
+        update(
+            key,
+            mask,
+            kev::eval_1cards(i),
+            &mut lookup,
+            &mut lookup_flush,
+        );
+    }
+
+    // 2-cards
+    for i in 0..(NUMBER_OF_CARDS - 1) {
+        let (key, mask) = add_card(0x3333 << SUIT_SHIFT, 0, i);
+        for j in (i + 1)..NUMBER_OF_CARDS {
+            let (key, mask) = add_card(key, mask, j);
+            update(
+                key,
+                mask,
+                kev::eval_2cards(i, j),
+                &mut lookup,
+                &mut lookup_flush,
+            );
+        }
+    }
+
+    // 3-cards
+    for i in 0..(NUMBER_OF_CARDS - 2) {
+        let (key, mask) = add_card(0x3333 << SUIT_SHIFT, 0, i);
+        for j in (i + 1)..(NUMBER_OF_CARDS - 1) {
+            let (key, mask) = add_card(key, mask, j);
+            for k in (j + 1)..NUMBER_OF_CARDS {
+                let (key, mask) = add_card(key, mask, k);
+                update(
+                    key,
+                    mask,
+                    kev::eval_3cards(i, j, k),
+                    &mut lookup,
+                    &mut lookup_flush,
+                );
+            }
+        }
+    }
+
+    // 4-cards
+    for i in 0..(NUMBER_OF_CARDS - 3) {
+        let (key, mask) = add_card(0x3333 << SUIT_SHIFT, 0, i);
+        for j in (i + 1)..(NUMBER_OF_CARDS - 2) {
+            let (key, mask) = add_card(key, mask, j);
+            for k in (j + 1)..(NUMBER_OF_CARDS - 1) {
+                let (key, mask) = add_card(key, mask, k);
+                for m in (k + 1)..NUMBER_OF_CARDS {
+                    let (key, mask) = add_card(key, mask, m);
+                    update(
+                        key,
+                        mask,
+                        kev::eval_4cards(i, j, k, m),
+                        &mut lookup,
+                        &mut lookup_flush,
+                    );
+                }
+            }
+        }
+    }
+
     // 5-cards
     for i in 0..(NUMBER_OF_CARDS - 4) {
         let (key, mask) = add_card(0x3333 << SUIT_SHIFT, 0, i);

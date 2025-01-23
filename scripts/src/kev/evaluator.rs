@@ -26,6 +26,114 @@ fn find_fast(u: u32) -> usize {
 }
 
 #[inline]
+fn eval_1cards_fast(c1: u32) -> u16 {
+    let mut remaining_cards = [0; 51];
+    let mut i = 0;
+    for card in CARDS {
+        if card == c1 {
+            continue;
+        }
+        remaining_cards[i] = card;
+        i += 1;
+    }
+    if i != 51 {
+        panic!("Invalid number of remaining cards: {}", i);
+    }
+
+
+    let mut worst = 0;
+    for i in 0..51 {
+        for j in (i + 1)..51 {
+            for k in (j + 1)..51 {
+                for m in (k + 1)..51 {
+                    let q = eval_5cards_fast(c1, remaining_cards[i], remaining_cards[j], remaining_cards[k], remaining_cards[m]);
+                    worst = cmp::max(worst, q);
+                }
+            }
+        }
+    }
+    worst
+}
+
+#[inline]
+fn eval_2cards_fast(c1: u32, c2: u32) -> u16 {
+    let mut remaining_cards = [0; 50];
+    let mut i = 0;
+    for card in CARDS {
+        if card == c1 || card == c2 {
+            continue;
+        }
+        remaining_cards[i] = card;
+        i += 1;
+    }
+    if i != 50 {
+        panic!("Invalid number of remaining cards: {}", i);
+    }
+
+
+    let mut worst = 0;
+    for i in 0..50 {
+        for j in (i + 1)..50 {
+            for k in (j + 1)..50 {
+                let q = eval_5cards_fast(c1, c2, remaining_cards[i], remaining_cards[j], remaining_cards[k]);
+                worst = cmp::max(worst, q);
+            }
+        }
+    }
+    worst
+}
+
+#[inline]
+fn eval_3cards_fast(c1: u32, c2: u32, c3: u32) -> u16 {
+    let mut remaining_cards = [0; 49];
+    let mut i = 0;
+    for card in CARDS {
+        if card == c1 || card == c2 || card == c3 {
+            continue;
+        }
+        remaining_cards[i] = card;
+        i += 1;
+    }
+    if i != 49 {
+        panic!("Invalid number of remaining cards: {}", i);
+    }
+
+
+    let mut worst = 0;
+    for i in 0..49 {
+        for j in (i + 1)..49 {
+            let q = eval_5cards_fast(c1, c2, c3, remaining_cards[i], remaining_cards[j]);
+            worst = cmp::max(worst, q);
+        }
+    }
+    worst
+}
+
+#[inline]
+fn eval_4cards_fast(c1: u32, c2: u32, c3: u32, c4: u32) -> u16 {
+    let mut remaining_cards = [0; 48];
+    let mut i = 0;
+    for card in CARDS {
+        if card == c1 || card == c2 || card == c3 || card == c4 {
+            continue;
+        }
+        remaining_cards[i] = card;
+        i += 1;
+    }
+    if i != 48 {
+        panic!("Invalid number of remaining cards: {}", i);
+    }
+
+
+    let mut worst = 0;
+    for i in 0..48 {
+        let q = eval_5cards_fast(c1, c2, c3, c4, remaining_cards[i]);
+        worst = cmp::max(worst, q);
+    }
+    worst
+}
+
+#[inline]
 fn eval_5cards_fast(c1: u32, c2: u32, c3: u32, c4: u32, c5: u32) -> u16 {
     let q = ((c1 | c2 | c3 | c4 | c5) >> 16) as usize;
     if (c1 & c2 & c3 & c4 & c5 & 0xf000) != 0 {
@@ -66,6 +174,26 @@ fn eval_7cards_fast(c1: u32, c2: u32, c3: u32, c4: u32, c5: u32, c6: u32, c7: u3
         best = cmp::min(best, q);
     }
     best
+}
+
+#[inline]
+pub fn eval_1cards(c1: usize) -> u16 {
+    eval_1cards_fast(CARDS[c1])
+}
+
+#[inline]
+pub fn eval_2cards(c1: usize, c2: usize) -> u16 {
+    eval_2cards_fast(CARDS[c1], CARDS[c2])
+}
+
+#[inline]
+pub fn eval_3cards(c1: usize, c2: usize, c3: usize) -> u16 {
+    eval_3cards_fast(CARDS[c1], CARDS[c2], CARDS[c3])
+}
+
+#[inline]
+pub fn eval_4cards(c1: usize, c2: usize, c3: usize, c4: usize) -> u16 {
+    eval_4cards_fast(CARDS[c1], CARDS[c2], CARDS[c3], CARDS[c4])
 }
 
 #[inline]
